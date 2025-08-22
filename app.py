@@ -122,43 +122,44 @@
 
 
 
-import os
 import pickle
 import pandas as pd
 import streamlit as st
 import numpy as np
-
-# -------------------------
-# Base directory for relative paths
-# -------------------------
-BASE_DIR = os.path.dirname(__file__)
+import os
+import requests
 
 # -------------------------
 # Load trained model
 # -------------------------
+BASE_DIR = os.path.dirname(__file__)
 model_path = os.path.join(BASE_DIR, "models", "random_forest_model.pkl")
+
 if not os.path.exists(model_path):
     st.error(f"❌ Model file not found: {model_path}")
-    st.stop()  # Stop execution if model is missing
+    st.stop()
 else:
     with open(model_path, "rb") as file:
         model = pickle.load(file)
 
 # -------------------------
-# Load dataset to extract categories
+# Load dataset from GitHub
 # -------------------------
-data_path = os.path.join(BASE_DIR, "data", "Foodiebay.csv")
-if not os.path.exists(data_path):
-    st.error(f"❌ Dataset file not found: {data_path}")
-    st.stop()  # Stop execution if dataset is missing
-else:
-    df = pd.read_csv(data_path)
+# Replace with your GitHub raw URL of the CSV
+DATA_URL = "https://raw.githubusercontent.com/Rathod-Sandip-Jagan/FoodieBay/main/data/Foodiebay.csv"
 
-    # Create label encoding dictionaries
-    location_map = {name: idx for idx, name in enumerate(sorted(df["location"].dropna().unique()))}
-    rest_type_map = {name: idx for idx, name in enumerate(sorted(df["rest_type"].dropna().unique()))}
-    listed_type_map = {name: idx for idx, name in enumerate(sorted(df["listed_in_type"].dropna().unique()))}
-    listed_city_map = {name: idx for idx, name in enumerate(sorted(df["listed_in_city"].dropna().unique()))}
+
+try:
+    df = pd.read_csv(DATA_URL)
+except Exception as e:
+    st.error(f"❌ Failed to load dataset from GitHub: {e}")
+    st.stop()
+
+# Create label encoding dictionaries
+location_map = {name: idx for idx, name in enumerate(sorted(df["location"].dropna().unique()))}
+rest_type_map = {name: idx for idx, name in enumerate(sorted(df["rest_type"].dropna().unique()))}
+listed_type_map = {name: idx for idx, name in enumerate(sorted(df["listed_in_type"].dropna().unique()))}
+listed_city_map = {name: idx for idx, name in enumerate(sorted(df["listed_in_city"].dropna().unique()))}
 
 # -------------------------
 # Streamlit UI
@@ -229,7 +230,6 @@ if st.sidebar.button("🚀 Predict Rating"):
         **cuisine_data
     }])
 
-    # Prediction
     try:
         prediction = model.predict(input_data)[0]
         st.success(f"⭐ **Predicted Rating: {prediction:.2f} / 5**")
