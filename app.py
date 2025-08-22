@@ -139,6 +139,7 @@ BASE_DIR = os.path.dirname(__file__)
 model_path = os.path.join(BASE_DIR, "models", "random_forest_model.pkl")
 if not os.path.exists(model_path):
     st.error(f"❌ Model file not found: {model_path}")
+    st.stop()  # Stop execution if model is missing
 else:
     with open(model_path, "rb") as file:
         model = pickle.load(file)
@@ -149,6 +150,7 @@ else:
 data_path = os.path.join(BASE_DIR, "data", "Foodiebay.csv")
 if not os.path.exists(data_path):
     st.error(f"❌ Dataset file not found: {data_path}")
+    st.stop()  # Stop execution if dataset is missing
 else:
     df = pd.read_csv(data_path)
 
