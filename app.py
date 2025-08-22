@@ -2,6 +2,10 @@ import streamlit as st
 import pickle
 import pandas as pd
 import numpy as np
+import os
+
+# Get the directory where app.py is located
+BASE_DIR = os.path.dirname(__file__)
 
 # -------------------------
 # Load trained model
@@ -13,7 +17,10 @@ with open(model_path, "rb") as file:
 # -------------------------
 # Load dataset to extract categories
 # -------------------------
-data_path = "E:\\FoodieBay DataSet\\data\\Foodiebay.csv"   # 👈 make sure this exists
+# data_path = "E:\\FoodieBay DataSet\\data\\Foodiebay.csv"   # 👈 make sure this exists
+# df = pd.read_csv(data_path)
+# Load dataset
+data_path = os.path.join(BASE_DIR, "data", "Foodiebay.csv")
 df = pd.read_csv(data_path)
 
 # Create label encoding dictionaries (map text → number)
