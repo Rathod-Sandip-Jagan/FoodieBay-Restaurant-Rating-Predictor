@@ -35,7 +35,7 @@ cls
 
 🛠 Installation & Setup
 1️⃣ Clone the repo
-git clone https://github.com/yourusername/foodiebay-rating-predictor.git
+git clone https://github.com/Rathod-Sandip-Jagan/FoodieBay-Restaurant-Rating-Predictor.git
 cd foodiebay-rating-predictor
 
 2️⃣ Create virtual environment
